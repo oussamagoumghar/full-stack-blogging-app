@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/ougabriel/full-stack-blogging-app.git'
+                git branch: 'main', url: 'https://github.com/oussamagoumghar/full-stack-blogging-app.git'
             }
         }
         stage('Compile') {
@@ -47,29 +47,29 @@ pipeline {
         stage('Docker Build & Tag') {
             steps {
                 script{
-                withDockerRegistry(credentialsId: 'dockerhub-cred', url: 'https://index.docker.io/v1/') {
-                sh "docker build -t ugogabriel/gab-blogging-app ."
+                withDockerRegistry(credentialsId: 'dockerhub-credentials', url: 'https://index.docker.io/v1/') {
+                sh "docker build -t oussamagoumghar/blogging-app ."
                 }
                 }
             }
         }
         stage('Trivy Image Scan') {
             steps {
-                sh "trivy image --format table -o image.html ugogabriel/gab-blogging-app:latest"
+                sh "trivy image --format table -o image.html oussamagoumghar/blogging-app:latest"
             }
         }
         stage('Docker Push Image') {
             steps {
                 script{
-                withDockerRegistry(credentialsId: 'dockerhub-cred', url: 'https://index.docker.io/v1/') {
-                    sh "docker push ugogabriel/gab-blogging-app"
+                withDockerRegistry(credentialsId: 'dockerhub-credentials', url: 'https://index.docker.io/v1/') {
+                    sh "docker push oussamagoumghar/blogging-app"
                 }
                 }
             }
         }
         stage('K8s Deploy') {
             steps {
-               withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: ' devopsshack-cluster', contextName: '', credentialsId: 'k8s-token', namespace: 'webapps', serverUrl: 'https://AD1D9143EC6B3C8A72B36759FA28854D.gr7.eu-west-2.eks.amazonaws.com']]) {
+               withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: ' devopsshack-cluster', contextName: '', credentialsId: 'k8s-token', namespace: 'webapps', serverUrl: 'https://5DE38E78237D9D294BE19E6525EBBB78.yl4.eu-north-1.eks.amazonaws.com']]) {
                     sh "kubectl apply -f deployment-service.yml"
                     sleep 20
                 }
@@ -77,7 +77,7 @@ pipeline {
         }
         stage('Verify Deployment') {
             steps {
-               withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: ' devopsshack-cluster', contextName: '', credentialsId: 'k8s-token', namespace: 'webapps', serverUrl: 'https://AD1D9143EC6B3C8A72B36759FA28854D.gr7.eu-west-2.eks.amazonaws.com']]) {
+               withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: ' devopsshack-cluster', contextName: '', credentialsId: 'k8s-token', namespace: 'webapps', serverUrl: 'https://5DE38E78237D9D294BE19E6525EBBB78.yl4.eu-north-1.eks.amazonaws.com']]) {
                     sh "kubectl get pods"
                     sh "kubectl get service"
                 }
@@ -116,7 +116,7 @@ post {
             emailext(
                 subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus}",
                 body: body,
-                to: 'ougabriel@gmail.com',
+                to: 'oussama.goumghar1@gmail.com',
                 from: 'jenkins@example.com',
                 replyTo: 'jenkins@example.com',
                 mimeType: 'text/html'

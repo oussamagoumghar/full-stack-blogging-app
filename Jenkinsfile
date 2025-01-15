@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/oussamagoumghar/full-stack-blogging-app.git'
+                git branch: 'master', url: 'https://github.com/oussamagoumghar/full-stack-blogging-app.git'
             }
         }
         stage('Compile') {

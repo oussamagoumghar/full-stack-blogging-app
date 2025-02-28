@@ -19,4 +19,3 @@ jobs:
             -Dsonar.organization=oussamagoumghar
             -Dsonar.projectKey=oussamagoumghar_full-stack-blogging-app
             -Dsonar.report.export.path=sonar-report.yaml
-            -Dsonar.project.settings=sonar-project.properties

@@ -1,4 +1,4 @@
-name: "scan code with sonercloud"
+name: "Scan code with SonarCloud"
 on:
   workflow_dispatch:
   push:
@@ -10,12 +10,23 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v2
-      - name: "Run sonarcloud scanner"
+
+      - name: "Set up JDK"
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17' # Use the appropriate Java version for your project
+          distribution: 'temurin'
+
+      - name: "Compile project with Maven"
+        run: ./mvnw clean compile
+
+      - name: "Run SonarCloud scanner"
         uses: SonarSource/sonarcloud-github-action@v5.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:  
+        with:
           args: >
             -Dsonar.organization=oussamagoumghar
             -Dsonar.projectKey=oussamagoumghar_full-stack-blogging-app
+            -Dsonar.java.binaries=target/classes
             -Dsonar.report.export.path=sonar-report.yaml

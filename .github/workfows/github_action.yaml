@@ -1,0 +1,22 @@
+name: "scan code with sonercloud"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v2
+      - name: "Run sonarcloud scanner"
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:  
+          args: >
+            -Dsonar.organization=oussamagoumghar
+            -Dsonar.projectKey=oussamagoumghar_full-stack-blogging-app
+            -Dsonar.report.export.path=sonar-report.yaml

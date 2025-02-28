@@ -17,6 +17,9 @@ jobs:
           java-version: '17' # Use the appropriate Java version for your project
           distribution: 'temurin'
 
+      - name: "Make mvnw executable"
+        run: chmod +x mvnw
+
       - name: "Compile project with Maven"
         run: ./mvnw clean compile
 

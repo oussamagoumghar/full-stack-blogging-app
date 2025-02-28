@@ -11,7 +11,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
       - name: "Run sonarcloud scanner"
-        uses: SonarSource/sonarcloud-github-action@v5.0.0
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:  
@@ -19,3 +19,4 @@ jobs:
             -Dsonar.organization=oussamagoumghar
             -Dsonar.projectKey=oussamagoumghar_full-stack-blogging-app
             -Dsonar.report.export.path=sonar-report.yaml
+            -Dsonar.project.settings=sonar-project.properties
